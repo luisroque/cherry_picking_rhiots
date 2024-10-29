@@ -49,6 +49,10 @@ def transform_and_save(
 
     transformed_long_df = pd.concat(transformed_data, ignore_index=True)
 
+    transformed_long_df["ds"] = pd.to_datetime(transformed_long_df["ds"]).dt.date
+    transformed_long_df["unique_id"] = transformed_long_df["unique_id"].astype(str)
+    transformed_long_df["y"] = pd.to_numeric(transformed_long_df["y"], errors="coerce")
+
     output_path = OUTPUT_DIR / dataset_name
     output_path.mkdir(parents=True, exist_ok=True)
     original_path = ORIGINAL_DATA_DIR / dataset_name
