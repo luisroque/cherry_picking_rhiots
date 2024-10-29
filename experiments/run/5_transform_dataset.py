@@ -17,6 +17,11 @@ def transform_and_save(
     data_cls = DATASETS[dataset_name]
     ds = data_cls.load_data(group)
 
+    ds["ds"] = pd.to_datetime(ds["ds"], errors="coerce")
+
+    if ds["ds"].isnull().any():
+        raise ValueError("Some entries in 'ds' could not be converted to datetime.")
+
     transformed_data = []
 
     # apply transformations to each series independently
