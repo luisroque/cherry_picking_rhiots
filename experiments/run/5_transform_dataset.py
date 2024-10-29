@@ -17,11 +17,6 @@ def transform_and_save(
     data_cls = DATASETS[dataset_name]
     ds = data_cls.load_data(group)
 
-    ds["ds"] = pd.to_datetime(ds["ds"], errors="coerce")
-
-    if ds["ds"].isnull().any():
-        raise ValueError("Some entries in 'ds' could not be converted to datetime.")
-
     transformed_data = []
 
     # apply transformations to each series independently
@@ -45,7 +40,7 @@ def transform_and_save(
         transformed_df = pd.DataFrame(
             {
                 "unique_id": unique_id,
-                "ds": series_data["ds"].values,
+                "ds": series_data["ds"].dt.date.values,
                 "y": transformed_series.flatten(),
             }
         )
