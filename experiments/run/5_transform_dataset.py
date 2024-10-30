@@ -52,7 +52,11 @@ def transform_and_save(
         transformed_df = pd.DataFrame(
             {
                 "unique_id": unique_id,
-                "ds": series_data["ds"].dt.date.values,
+                "ds": (
+                    series_data["ds"]
+                    if dataset_name == "M4"
+                    else series_data["ds"].dt.date.values
+                ),
                 "y": transformed_series.flatten(),
             }
         )
