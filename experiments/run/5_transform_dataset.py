@@ -14,6 +14,18 @@ def transform_and_save(
 ):
     """Transforms each series in the dataset independently and saves in long format"""
 
+    output_file = (
+        OUTPUT_DIR
+        / dataset_name
+        / f"{dataset_name}_{group}_{transformation}_v{version}.csv"
+    )
+
+    if output_file.exists():
+        print(
+            f"Transformed dataset for {dataset_name} - {group} - {transformation} - v{version} already exists. Skipping..."
+        )
+        return
+
     data_cls = DATASETS[dataset_name]
     ds = data_cls.load_data(group)
 
